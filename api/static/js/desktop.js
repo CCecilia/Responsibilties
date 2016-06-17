@@ -4,6 +4,8 @@
 
 $(document).ready(function(){
     var csrftoken = $("input[name='csrfmiddlewaretoken']").val();
+    var current_page = $("#current_page").val();
+
     //set csrf token
     $.ajaxSetup({
         beforeSend: function(xhr) {
@@ -11,11 +13,13 @@ $(document).ready(function(){
         }
     });
 
+    //Register/Login Form Toggle
     $("#show-register,#show-login").click(function(){
         $("#login-form").slideToggle();
         $("#register-form").slideToggle();
     });
 
+    //Register
     $("#register-submit-btn").click(function(){
         username = $("#register-username");
         email = $("#register-email");
@@ -38,7 +42,11 @@ $(document).ready(function(){
             console.log(params);
             $.post('/registerUser/', params, function (response) {
                 if (response.status === "success") {
-                    window.alert("You registered");
+                    username.css("border","1px solid green");
+                    email.css("border","1px solid green");
+                    password.css("border","1px solid green");
+                    confirm_password.css("border","1px solid green");
+                    window.location.replace("/dashboard/"+response.user_id+"/");
                 }
                 else if(response.status === "fail"){
                     window.alert(response.error_message);

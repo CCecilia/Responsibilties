@@ -27,6 +27,7 @@
 
     <body>
         {% csrf_token %}
+        <input type="hidden" id="current_page" value="{{ page }}"/>
         {% block content %}
         {% endblock %}
 

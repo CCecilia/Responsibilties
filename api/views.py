@@ -50,10 +50,12 @@ def registerUser(request):
         # Hash Password
         h = hashlib.md5()
         h.update(password)
+
         #Create User
         new_user = User(username=username, login_email=email, password=h.hexdigest())
         new_user.save()
         print("registered new user")
+
         # Send Welcome Email
         body = open('templates/email/welcome.html', 'r+')
         body = body.read()
@@ -63,19 +65,40 @@ def registerUser(request):
         email.content_subtype = "html"
         email.send()
         print("welcome email sent")
+
+        #Set Session
+        request.session['user_id'] = str(new_user.uid)
+
         response = {
             'status': "success",
+            'user_id': str(new_user.uid)
         }
 
     return HttpResponse(json.dumps(response))
 
+
 #### Page Rendering ####
 def index(request):
     #Declare Vars
-    print("index(rq):init")
+    print("index(request):init")
     #Page Data
     data = {
-        "page":"index",
+        'page': "index",
     }
     #Render Page
     return render(request,'desktop/index.html',data)
+
+def dashboard(request,user_uid):
+    #Declare Vars
+    print("dashboard(request):init")
+    if request.session.get('user_id', user_uid):
+        user = User.objects.filter(uid=str(user_uid))[0]
+        #Page Data
+        data = {
+            'page': "dashboard",
+            'user': user
+        }
+        #Render Page
+        return render(request,'desktop/dashboard.html',data)
+    else:
+        return redirect(index(request))

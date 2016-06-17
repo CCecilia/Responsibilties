@@ -7,6 +7,8 @@ class User(models.Model):
     login_email = models.EmailField(max_length=254,unique=True,blank=False,null=False)
     username = models.EmailField(max_length=254,unique=True,blank=False,null=False)
     password = models.CharField(max_length=254,blank=False,null=False,)
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return str(self.email)
