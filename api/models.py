@@ -15,4 +15,7 @@ class User(models.Model):
         return str(self.email)
 
     class Meta:
-        unique_together = ("username", "login_email")
+        unique_together = (
+            "username",
+            "login_email"
+        )
