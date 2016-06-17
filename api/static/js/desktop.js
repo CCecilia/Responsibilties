@@ -55,4 +55,27 @@ $(document).ready(function(){
         }
     });
 
+    //Login
+    $("#login-btn").click(function(){
+        email = $("#login-email");
+        password = $("#login-password");
+
+        if(email.val() === "" || password.val() === ""){
+            email.css("border","1px solid red");
+            password.css("border","1px solid red");
+        }else{
+            params = {
+                email: email.val(),
+                password: password.val()
+            };
+            $.post('/loginAjax/', params, function (response) {
+                 if(response.status === "fail" && response.error === "email_error"){
+                     email.css("border","1px solid red");
+                 }else if(response.status === "fail" && response.error === "password_error"){
+                     password.css("border","1px solid red");
+                 }
+            }, "json")
+        }
+    });
+
 });

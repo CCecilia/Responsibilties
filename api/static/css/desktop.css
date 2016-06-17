@@ -38,7 +38,7 @@ body {
     z-index: 2;
 }
 
-#login-username{
+#login-email{
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;

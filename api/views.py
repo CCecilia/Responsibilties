@@ -76,6 +76,50 @@ def registerUser(request):
 
     return HttpResponse(json.dumps(response))
 
+def loginAjax(request):
+    email = str(request.POST['email'])
+    password = str(request.POST['password'])
+
+    email_check = User.objects.filter(login_email=email)
+
+    # Hash Password
+    h = hashlib.md5()
+    h.update(password)
+
+    #User Check
+    if len(email_check) == 0:
+        print("login failed: email_error")
+        response = {
+            'status': "fail",
+            'error': "email_error",
+            'error_message': "Email not in system"
+        }
+        return HttpResponse(json.dumps(response))
+    else:
+        user = email_check[0]
+
+    #Password Check
+    if str(user.password) == h.hexdigest():
+        #Set Session
+        request.session['user_id'] = str(new_user.uid)
+
+        #Update User Data
+        user.last_login = timezone.now()
+        user.save()
+
+        print("login success")
+        return redirect(dashboard(request,str(user.uid)))
+    else:
+        print("login fail: password error")
+        response = {
+            'status': "fail",
+            'error': "password_error",
+            'error_message': "Password Incorrect"
+        }
+        return HttpResponse(json.dumps(response))
+
+
+
 
 #### Page Rendering ####
 def index(request):

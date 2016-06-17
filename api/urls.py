@@ -9,4 +9,5 @@ urlpatterns = [
 
     #Ajax
     url(r'^registerUser/$', views.registerUser, name='registerUser'),
+    url(r'^loginAjax/$', views.loginAjax, name='loginAjax'),
 ]
