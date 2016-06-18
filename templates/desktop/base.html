@@ -42,15 +42,17 @@
                     </div>
                     <div id="navbar" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="nav-link active">
-                                <a href="#">Finances</a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="#about">Family</a>
-                            </li>
-                            <li class="nav-link">
-                                <a href="#contact">Finances</a>
-                            </li>
+                            {% if user.email_verified %}
+                                <li class="nav-link active">
+                                    <a href="#">Finances</a>
+                                </li>
+                                <li class="nav-link">
+                                    <a href="#about">Family</a>
+                                </li>
+                                <li class="nav-link">
+                                    <a href="#contact">Finances</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
