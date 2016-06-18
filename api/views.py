@@ -101,14 +101,19 @@ def loginAjax(request):
     #Password Check
     if str(user.password) == h.hexdigest():
         #Set Session
-        request.session['user_id'] = str(new_user.uid)
+        request.session['user_id'] = str(user.uid)
 
         #Update User Data
         user.last_login = timezone.now()
         user.save()
 
         print("login success")
-        return redirect(dashboard(request,str(user.uid)))
+        response = {
+            'status': "success",
+            'user_id': str(user.uid)
+        }
+
+        return HttpResponse(json.dumps(response))
     else:
         print("login fail: password error")
         response = {

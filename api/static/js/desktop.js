@@ -73,9 +73,17 @@ $(document).ready(function(){
                      email.css("border","1px solid red");
                  }else if(response.status === "fail" && response.error === "password_error"){
                      password.css("border","1px solid red");
+                 }else if(response.status === "success"){
+                     window.location.replace("/dashboard/"+response.user_id+"/");
                  }
             }, "json")
         }
+    });
+
+    //Nav
+    $(".nav-link").click(function(){
+        $(".nav-link").removeClass("active");
+        $(this).addClass("active");
     });
 
 });
