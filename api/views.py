@@ -131,6 +131,11 @@ def emailVerification(request,user_uid):
         user = user_check[0]
         user.email_verified = True
         user.save()
+        data = {
+            'page': "index",
+        }
+        # Render Page
+        return render(request, 'desktop/index.html', data)
 
 
 
