@@ -42,17 +42,15 @@
                     </div>
                     <div id="navbar" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav">
-                            {% if user.email_verified %}
-                                <li class="nav-link active">
-                                    <a href="#">Finances</a>
-                                </li>
-                                <li class="nav-link">
-                                    <a href="#about">Family</a>
-                                </li>
-                                <li class="nav-link">
-                                    <a href="#contact">Finances</a>
-                                </li>
-                            {% endif %}
+                            <li class="nav-link active">
+                                <a href="{% url 'api:profile' user.uid %}">Profile</a>
+                            </li>
+                            <li class="nav-link">
+                                <a href="#about">Family</a>
+                            </li>
+                            <li class="nav-link">
+                                <a href="#contact">Finances</a>
+                            </li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
@@ -60,7 +58,12 @@
         {% endblock %}
         {% block content %}
         {% endblock %}
-
+        {% block popups %}
+            <div id="verify-email-popup">
+                <p></p>
+                <a href="#">Resend</a>
+            </div>
+        {% endblock %}
         <script src="{% static 'js/jquery-1.11.3.js' %}"></script>
         <script src="{% static 'js/bootstrap.js' %}"></script>
         <script src="{% static 'js/desktop.js' %}"></script>

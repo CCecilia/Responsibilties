@@ -73,6 +73,9 @@ $(document).ready(function(){
                      email.css("border","1px solid red");
                  }else if(response.status === "fail" && response.error === "password_error"){
                      password.css("border","1px solid red");
+                 }else if(response.status === "fail" && response.error === "verification_error"){
+                     $("#verify-email-popup p").text(response.error_message);
+                     $("#verify-email-popup").slideDown();
                  }else if(response.status === "success"){
                      window.location.replace("/dashboard/"+response.user_id+"/");
                  }

@@ -22,6 +22,13 @@ from django.utils import timezone
 ##### From Project #####
 from .models import *
 
+#### Global ####
+def loginCheck(request,user_uid):
+    if request.session.get('user_id', user_uid):
+        user = User.objects.filter(uid=str(user_uid))[0]
+        return user
+    else:
+        return redirect(index(request))
 
 #### Ajax ####
 def registerUser(request):
@@ -100,6 +107,14 @@ def loginAjax(request):
 
     #Password Check
     if str(user.password) == h.hexdigest():
+        #Check Email Verified
+        if user.email_verified == False:
+            response = {
+                'status': "fail",
+                'error': "verification_error",
+                'error_message': "Email verification needed"
+            }
+            return HttpResponse(json.dumps(response))
         #Set Session
         request.session['user_id'] = str(user.uid)
 
@@ -153,14 +168,24 @@ def index(request):
 def dashboard(request,user_uid):
     #Declare Vars
     print("dashboard(request):init")
-    if request.session.get('user_id', user_uid):
-        user = User.objects.filter(uid=str(user_uid))[0]
-        #Page Data
-        data = {
-            'page': "dashboard",
-            'user': user
-        }
-        #Render Page
-        return render(request,'desktop/dashboard.html',data)
-    else:
-        return redirect(index(request))
+    user = loginCheck(request,user_uid)
+    #Page Data
+    data = {
+        'page': "dashboard",
+        'user': user
+    }
+    #Render Page
+    return render(request,'desktop/dashboard.html',data)
+
+
+def profile(request,user_uid):
+    #Declare Vars
+    print("dashboard(request):init")
+    user = loginCheck(request, user_uid)
+    #Page Data
+    data = {
+        'page': "profile",
+        'user': user
+    }
+    #Render Page
+    return render(request,'desktop/profile.html',data)
