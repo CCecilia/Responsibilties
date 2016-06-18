@@ -10,6 +10,7 @@ class User(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     last_login = models.DateTimeField(auto_now=False,null=True,blank=True)
+    email_verified = models.BooleanField(default=False)
 
     def __unicode__(self):
         return str(self.email)

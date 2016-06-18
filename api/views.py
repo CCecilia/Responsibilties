@@ -124,6 +124,14 @@ def loginAjax(request):
         return HttpResponse(json.dumps(response))
 
 
+#### API #####
+def emailVerification(request,user_uid):
+    user_check = User.objects.filter(uid=str(user_uid))
+    if len(user_check) != 0:
+        user = user_check[0]
+        user.email_verified = True
+        user.save()
+
 
 
 #### Page Rendering ####
