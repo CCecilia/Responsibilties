@@ -89,4 +89,26 @@ $(document).ready(function(){
         $(this).addClass("active");
     });
 
+    //Main Groups
+    $(".add-main-grouping").click(function(){
+        $(".add-main-grouping-input").css("display","inline-block");
+    });
+
+    $("#add-main-grouping-button").click(function(){
+        group_name = $("input[name='main-group-name']");
+        if( group_name.val() !== ""){
+            params = {
+                name: group_name.val()
+            };
+            $.post('/addMainGroup/', params, function (response) {
+                if(response.status === "success"){
+                    $(".add-main-grouping-input").empty();
+                    $(".add-main-grouping-input").text("main group added");
+                }
+            }, "json")
+        }else{
+            group_name.css("border","1px solid red");
+        }
+
+    });
 });

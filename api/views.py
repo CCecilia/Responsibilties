@@ -138,6 +138,17 @@ def loginAjax(request):
         }
         return HttpResponse(json.dumps(response))
 
+def addMainGroup(request):
+    name = str(request.POST['name'])
+    user_id = str(request.session.get('user_id'))
+    user = User.objects.filter(uid=user_id)[0]
+    print(str(user.username))
+    new_group = MainGroup(name=name,user=user)
+    new_group.save()
+    response = {
+        'status': "success"
+    }
+    return HttpResponse(json.dumps(response))
 
 #### API #####
 def emailVerification(request,user_uid):
@@ -169,10 +180,12 @@ def dashboard(request,user_uid):
     #Declare Vars
     print("dashboard(request):init")
     user = loginCheck(request,user_uid)
+    main_groups = MainGroup.objects.filter(user=user)
     #Page Data
     data = {
         'page': "dashboard",
-        'user': user
+        'user': user,
+        'mainGroups': main_groups
     }
     #Render Page
     return render(request,'desktop/dashboard.html',data)

@@ -11,6 +11,7 @@ class User(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     last_login = models.DateTimeField(auto_now=False,null=True,blank=True)
     email_verified = models.BooleanField(default=False)
+    number_of_main_groups = models.IntegerField(default=0)
 
     def __unicode__(self):
         return str(self.email)
@@ -20,3 +21,12 @@ class User(models.Model):
             "username",
             "login_email"
         )
+
+
+class MainGroup(models.Model):
+    name = models.CharField(max_length=254,blank=False,null=False,)
+    user = models.ForeignKey('User',blank=False,null=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return str(self.name)

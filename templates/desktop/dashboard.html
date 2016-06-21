@@ -1,6 +1,12 @@
 {% extends 'desktop/base.html'%}
 {% load staticfiles %}
 {% block content %}
-    <h1>{{ user.username }}</h1>
+    <div class="add-main-grouping">
+        Add New Main Group
+    </div>
+    <div class="add-main-grouping-input">
+        <input type="text" name="main-group-name" placeholder="group-name"/>
+        <button id="add-main-grouping-button" class="btn btn-success">Add</button>
+    </div>
 {% endblock %}
 
