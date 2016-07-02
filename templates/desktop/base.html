@@ -47,7 +47,7 @@
                             </li>
                             {% for group in mainGroups %}
                                 <li class="nav-link">
-                                    <a href="">group.name</a>
+                                    <a href="/dashboard/group/{{ group.id }}">{{ group.name }}</a>
                                 </li>
                             {% endfor %}
                         </ul>

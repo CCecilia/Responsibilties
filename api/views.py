@@ -23,7 +23,14 @@ from django.utils import timezone
 from .models import *
 
 #### Global ####
+
 def loginCheck(request,user_uid):
+    ####################################################
+    # Description: Check if user is logged in by session
+    #
+    # arg0: request   {object}
+    # arg1:  user_uid  {string}
+    ####################################################
     if request.session.get('user_id', user_uid):
         user = User.objects.filter(uid=str(user_uid))[0]
         return user
@@ -32,6 +39,11 @@ def loginCheck(request,user_uid):
 
 #### Ajax ####
 def registerUser(request):
+    ################################################
+    # Description: Creates a new 'User' model object
+    #
+    # arg0: request   {object}
+    ################################################
     username = str(request.POST['username'])
     email = str(request.POST['email'])
     password = str(request.POST['password'])
@@ -84,6 +96,12 @@ def registerUser(request):
     return HttpResponse(json.dumps(response))
 
 def loginAjax(request):
+    ##########################################################
+    # Description: Checks validity of email password POST body
+    # elements then adds user uid to sessions
+    #
+    # arg0: request   {object}
+    ##########################################################
     email = str(request.POST['email'])
     password = str(request.POST['password'])
 
@@ -139,6 +157,11 @@ def loginAjax(request):
         return HttpResponse(json.dumps(response))
 
 def addMainGroup(request):
+    #####################################################
+    # Description: Creates a new 'MainGroup' model object
+    #
+    # arg0: request   {object}
+    ####################################################
     name = str(request.POST['name'])
     user_id = str(request.session.get('user_id'))
     user = User.objects.filter(uid=user_id)[0]
@@ -152,6 +175,12 @@ def addMainGroup(request):
 
 #### API #####
 def emailVerification(request,user_uid):
+    ##############################################
+    # Description: Verifies a users email is valid
+    #
+    # arg0: request   {object}
+    # arg1:  user_uid  {string}
+    ##############################################
     user_check = User.objects.filter(uid=str(user_uid))
     if len(user_check) != 0:
         user = user_check[0]
@@ -167,6 +196,11 @@ def emailVerification(request,user_uid):
 
 #### Page Rendering ####
 def index(request):
+    #########################################
+    # Description: Renders the home page html
+    #
+    # arg0: request   {object}
+    #########################################
     #Declare Vars
     print("index(request):init")
     #Page Data
@@ -177,6 +211,12 @@ def index(request):
     return render(request,'desktop/index.html',data)
 
 def dashboard(request,user_uid):
+    ###############################################
+    # Description: Renders the dashboard page html
+    #
+    # arg0: request   {object}
+    # arg1:  user_uid  {string}
+    ###############################################
     #Declare Vars
     print("dashboard(request):init")
     user = loginCheck(request,user_uid)
@@ -190,8 +230,13 @@ def dashboard(request,user_uid):
     #Render Page
     return render(request,'desktop/dashboard.html',data)
 
-
 def profile(request,user_uid):
+    ############################################
+    # Description: Renders the profile page html
+    #
+    # arg0: request   {object}
+    # arg1:  user_uid  {string}
+    ############################################
     #Declare Vars
     print("dashboard(request):init")
     user = loginCheck(request, user_uid)
@@ -202,3 +247,25 @@ def profile(request,user_uid):
     }
     #Render Page
     return render(request,'desktop/profile.html',data)
+
+def groupPage(request,group_id):
+    ####################################################
+    # Description: Renders the dashboard group page html
+    #
+    # arg0: request   {object}
+    # arg1:  group_uid  {string}
+    ####################################################
+    #Declare Vars
+    user_id = str(request.session.get('user_id'))
+    user = User.objects.filter(uid=user_id)[0]
+    group = MainGroup.objects.get(id=group_id)
+    main_groups = MainGroup.objects.filter(user=user)
+    #Page Data
+    data = {
+        'page': "group",
+        'user': user,
+        'group': group,
+        'mainGroups': main_groups
+    }
+    #Render Page
+    return render(request, 'desktop/profile.html', data)

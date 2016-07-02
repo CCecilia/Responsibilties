@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^dashboard/(?P<user_uid>[^/]+)/$', views.dashboard, name='dashboard'),
     url(r'^profile/(?P<user_uid>[^/]+)/$', views.profile, name='profile'),
     url(r'^email/verification/(?P<user_uid>[^/]+)/$', views.emailVerification, name='emailVerification'),
+    url(r'^dashboard/group/(?P<group_id>[^/]+)/$', views.groupPage, name='groupPage'),
 
     #Ajax
     url(r'^registerUser/$', views.registerUser, name='registerUser'),

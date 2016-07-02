@@ -104,6 +104,9 @@ $(document).ready(function(){
                 if(response.status === "success"){
                     $(".add-main-grouping-input").empty();
                     $(".add-main-grouping-input").text("main group added");
+                    setTimeout(function () {
+                        location.reload();
+                    },5000)
                 }
             }, "json")
         }else{
