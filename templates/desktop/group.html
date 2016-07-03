@@ -1,0 +1,47 @@
+{% extends 'desktop/base.html'%}
+{% load staticfiles %}
+{% block content %}
+    <div class="row calender-wrap">
+        <div id='calendar'></div>
+    </div>
+    <div class="row group-options-wrap">
+        <ul class="group-options-list">
+            <li>
+                <button id="add-task-btn" class="btn btn-success">Add New Task</button>
+            </li>
+            <li>
+                <button id="remove-task-btn" class="btn btn-danger">Remove Task</button>
+            </li>
+        </ul>
+    </div>
+    <div class="new-task-popup">
+        <form id="new-task-form">
+            <fieldset class="form-row">
+                <legend>Description</legend>
+                <input class="form-control" type="text" name="task-title" placeholder="Title" required />
+                <textarea class="form-control" rows="5" cols="50" name="task-notes" placeholder="Notes"></textarea>
+            </fieldset>
+
+            <fieldset class="form-row">
+                <legend>Select Type</legend>
+                <select class="dropdown type-select" title="Responsibilty Type" required>
+                        <option class="type-option" value="0">Select Type</option>
+                    {% for type in types %}
+                        <option class="type-option" value="{{ type.id }}">{{ type.name }}</option>
+                    {% endfor %}
+                </select>
+            </fieldset>
+
+            <fieldset class="form-row task-services">
+
+
+            </fieldset>
+
+            <fieldset class="form-row service-options">
+                <legend>Service Options</legend>
+
+
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

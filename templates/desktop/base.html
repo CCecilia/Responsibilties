@@ -15,6 +15,10 @@
         <!-- Bootstrap core CSS -->
         <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 
+        <!-- Calendr Dependcies -->
+        <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.8.0/fullcalendar.min.css" rel="stylesheet">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.8.0/fullcalendar.print.css" rel="stylesheet">
+
         <!-- Custom styles for this template -->
         <link href="{% static 'css/desktop.css' %}" rel="stylesheet">
 
@@ -65,6 +69,8 @@
         {% endblock %}
         <script src="{% static 'js/jquery-1.11.3.js' %}"></script>
         <script src="{% static 'js/bootstrap.js' %}"></script>
+        <script src="{% static 'js/moment.js' %}"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.8.0/fullcalendar.min.js"></script>
         <script src="{% static 'js/desktop.js' %}"></script>
     </body>
 </html>

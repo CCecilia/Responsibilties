@@ -1,18 +1,38 @@
 /**
  * Created by christian.cecilia1@gmail.com on 6/16/16.
  */
+var csrftoken = $("input[name='csrfmiddlewaretoken']").val();
+var current_page = $("#current_page").val();
 
-$(document).ready(function(){
-    var csrftoken = $("input[name='csrfmiddlewaretoken']").val();
-    var current_page = $("#current_page").val();
+//set csrf token
+$.ajaxSetup({
+    beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    }
+});
 
-    //set csrf token
-    $.ajaxSetup({
-        beforeSend: function(xhr) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+function serviceClicked(service_id){
+    console.log("service clicked");
+    console.log(service_id);
+    $(".service-link").each(function(){
+        console.log($(this).attr('data-id'));
+        if( $(this).attr('data-id') == service_id){
+            console.log("is selected");
+            $(this).css("opacity","1");
+            $.post('/getServiceOptions/', {service_id: service_id}, function (response) {
+                if( response.status === "success" ){
+                    console.log("got service options");
+                }
+            }, "json");
+            $('.service-options').show();
+        }else{
+            $(this).css("opacity",".5");
         }
     });
+}
 
+
+$(document).ready(function(){
     //Register/Login Form Toggle
     $("#show-register,#show-login").click(function(){
         $("#login-form").slideToggle();
@@ -113,5 +133,56 @@ $(document).ready(function(){
             group_name.css("border","1px solid red");
         }
 
+    });
+
+
+    //Calender
+    $("#calendar").fullCalendar({
+        // put your options and callbacks here
+    });
+
+    //New Task Form
+    $(".type-select").change(function(){
+        console.log("type changed");
+        services_row = $(".task-services");
+        type_id = $(".type-option").filter(":selected").val();
+
+        //reset services
+        services_row.empty();
+        services_row.hide();
+
+        if( type_id == 0 ){
+            console.log("type none selected");
+            services_row.hide();
+        }else if( type_id == 2 ){
+            console.log(type_id);
+            services_row.show();
+            $("<legend>Time</legend>").appendTo(services_row);
+            
+        }else{
+            console.log("type selected");
+            console.log(type_id);
+            services_row.show();
+            $("<legend id='service-legend'>Services</legend>").appendTo(services_row);
+            $("<ul class='services-list'></ul>").insertAfter("#service-legend");
+            $.post('/getServices/', {type_id: type_id}, function (response) {
+                if( response.status === "success" ){
+                    console.log("got services");
+                    console.log(response.services);
+                    services_list = response.services;
+                    console.log(services_list.length);
+                    for (i = 0; i < services_list.length; i++) {
+                        listHtml = "<li>" +
+                                        "<a class='service-link' onclick='serviceClicked("+services_list[i].id+")' data-id='"+services_list[i].id+"'>" +
+                                            "<img class='service-thumbnail' src='"+services_list[i].logo_image_url+"' alt='"+services_list[i].name+"'/>" +
+                                        "</a>"+
+                                    "</li>";
+                        $(listHtml).appendTo(".services-list");
+                    }
+                }else{
+                    console.log("failed to get services");
+                }
+            }, "json");
+        }
     });
 });

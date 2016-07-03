@@ -81,3 +81,47 @@ body {
 .add-main-grouping-input{
     display: none;
 }
+
+.calender-wrap, .group-options-wrap{
+    padding: 2%;
+}
+
+.group-options-list, .services-list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.group-options-list li, .services-list li{
+    display: inline;
+}
+
+.new-task-popup{
+    width: 50%;
+    margin: auto;
+    background-color:darkgray;
+    padding: 3%;
+}
+
+.service-thumbnail{
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.task-services{
+    display: none;
+}
+
+.services-loading-wrap{
+    text-align: center;
+    display: none;
+}
+
+.service-link{
+    margin-right: 5%;
+}
+
+.service-options{
+    display: none;
+}

@@ -14,4 +14,6 @@ urlpatterns = [
     url(r'^registerUser/$', views.registerUser, name='registerUser'),
     url(r'^loginAjax/$', views.loginAjax, name='loginAjax'),
     url(r'^addMainGroup/$', views.addMainGroup, name='addMainGroup'),
+    url(r'^getServices/$', views.getServices, name='getServices'),
+    url(r'^getServiceOptions/$', views.getServiceOptions, name='getServiceOptions'),
 ]
