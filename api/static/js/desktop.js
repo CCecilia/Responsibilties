@@ -11,6 +11,8 @@ $.ajaxSetup({
     }
 });
 
+//New Task Form
+// services
 function serviceClicked(service_id){
     console.log("service clicked");
     console.log(service_id);
@@ -22,6 +24,15 @@ function serviceClicked(service_id){
             $.post('/getServiceOptions/', {service_id: service_id}, function (response) {
                 if( response.status === "success" ){
                     console.log("got service options");
+                    console.log(response.options);
+                    options = response.options;
+                    for (i = 0; i < options.length; i++) {
+                        html =  "<li>" +
+                                    "<label for='option-"+options[i].id+"'>"+options[i].name+ "</label>" +
+                                    "<input id='option-"+options[i].id+"' type='radio' class='option-radio' value='"+options[i].id+"' onchange='optionClicked("+options[i].id+")'/>" +
+                                "</li>";
+                        $(html).appendTo(".options-list-horizontal");
+                    }
                 }
             }, "json");
             $('.service-options').show();
@@ -30,6 +41,32 @@ function serviceClicked(service_id){
         }
     });
 }
+
+function optionClicked(option_id) {
+    console.log("option "+option_id+" clicked");
+    $.post('/getOptionInputs/', {option_id: option_id}, function (response) {
+        if( response.status === "success" ){
+            console.log("got inputs");
+            console.log(response.input_html);
+            input_html = response.input_html;
+            for (i = 0; i < input_html.length; i++) {
+                $(input_html[i]).appendTo(".options-list-horizontal");
+            }
+            if( response.map_required === "True" ){
+                console.log("map required");
+                //$("").insertAfter(".options-list-horizontal");
+                //initMap();
+                $('#map').show();
+            }else{
+               console.log("map not required")
+            }
+        }else{
+            console.log("get inputs failed");
+        }
+    }, "json");
+}
+
+
 
 
 $(document).ready(function(){
@@ -153,6 +190,7 @@ $(document).ready(function(){
 
         if( type_id == 0 ){
             console.log("type none selected");
+            $("#service-legend").hide();
             services_row.hide();
         }else if( type_id == 2 ){
             console.log(type_id);
@@ -184,5 +222,9 @@ $(document).ready(function(){
                 }
             }, "json");
         }
+    });
+
+    $(".option-radio").click(function(){
+        console.log("option clicked");
     });
 });

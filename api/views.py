@@ -47,7 +47,7 @@ def respondSuccess():
     }
     return HttpResponse(json.dumps(response))
 
-def respondfail():
+def respondFail():
     response = {
         'status': "fail"
     }
@@ -238,7 +238,7 @@ def getServices(request):
         return HttpResponse(json.dumps(response))
     #Respond Failure
     else:
-        return respondfail()
+        return respondFail()
 
 def getServiceOptions(request):
     ###########################################
@@ -256,13 +256,86 @@ def getServiceOptions(request):
     print(str(user.username))
 
     #Get Options
-    options = service.options.all()
+    options_raw = service.options.all().values('id', 'name')
+    print(options_raw)
+
+    #Format Options to json
+    options = []
+    for option in options_raw:
+        options.append(option)
 
     #respond
     response = {
-        'status': "success"
+        'status': "success",
+        'options': options
     }
     return HttpResponse(json.dumps(response))
+
+def getOptionInputs(request):
+    ###########################################################
+    # Description: Returns back required inputs for option form
+    #
+    # arg0: request   {object}
+    ###########################################################
+
+    # Declare Vars
+    option_id = str(request.POST['option_id'])
+    option = ServiceOption.objects.get(pk=option_id)
+    print(str(option.name))
+
+    #Get Inputs
+    inputs_raw = option.inputs.all()
+    print(inputs_raw)
+
+    #Format Inputs to json
+    inputs = []
+    for input in inputs_raw:
+        #Construct Html
+        name = str(input.name)
+        input_type = str(input.input_type)
+        placeholder = str(input.placeholder)
+        value_one = str(input.value_one)
+        value_two = str(input.value_two)
+
+        #Set up single input
+        if input_type != "radio" and input_type != "checkbox":
+            output_html = "<input name='" + name + "' type='" + input_type + "' "
+        else:
+            #Else setup double input for radio and checkbox
+            output_1 = "<input name='" + name + "' type='" + input_type + "' "
+            output_2 = "<input name='" + name + "' type='" + input_type + "' "
+            response = {
+                'status': "success",
+                'input_html': output_1 + output_2
+            }
+            return HttpResponse(json.dumps(response))
+        #Add in placeholder
+        if placeholder != '':
+            output_html += "placeholder='" + placeholder + "' "
+
+        #Add values to checkbox/radios inputs
+        if value_one != '':
+            output_html  += "value='" + value_one + "' "
+            inputs.append(output_html)
+
+        if value_two != '':
+            output_html += "value='" + value_two + "' "
+            inputs.append(output_html)
+
+        output_html += "/>"
+
+        inputs.append(output_html)
+
+    #respond
+    response = {
+        'status': "success",
+        'input_html': inputs,
+        'map_required': str(option.map_required)
+    }
+    print("map required="+str(option.map_required))
+    return HttpResponse(json.dumps(response))
+
+
 
 #### API #####
 def emailVerification(request,user_uid):

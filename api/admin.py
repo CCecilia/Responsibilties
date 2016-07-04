@@ -18,7 +18,7 @@ class TaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'user', 'service', 'date', 'time')
 
 class ServiceOptionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'service')
+    list_display = ('id', 'name')
 
 #Registering Models
 admin.site.register(User, UserAdmin)
@@ -27,4 +27,5 @@ admin.site.register(ResponsibilityType, ResponsibilityTypeAdmin)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(ServiceOption, ServiceOptionAdmin)
+admin.site.register(OptionInput)
 # admin.site.register(ServiceCredential)

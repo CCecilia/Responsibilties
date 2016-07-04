@@ -125,3 +125,13 @@ body {
 .service-options{
     display: none;
 }
+
+.options-list-horizontal{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.options-list-horizontal li{
+    display: block;
+}

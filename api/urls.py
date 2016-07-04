@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^addMainGroup/$', views.addMainGroup, name='addMainGroup'),
     url(r'^getServices/$', views.getServices, name='getServices'),
     url(r'^getServiceOptions/$', views.getServiceOptions, name='getServiceOptions'),
+    url(r'^getOptionInputs/$', views.getOptionInputs, name='getOptionInputs'),
 ]

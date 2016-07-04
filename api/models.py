@@ -51,23 +51,35 @@ class Service(models.Model):
 
 class ServiceOption(models.Model):
     name = models.CharField(max_length=254,blank=False,null=False,)
-    RADIO = 'RD'
-    TEXT = 'TX'
-    EMAIL = 'EM'
-    NUMBER = 'NM'
-    CHECKBOX = 'CB'
+    date_created = models.DateTimeField(auto_now_add=True)
+    inputs = models.ManyToManyField('OptionInput',blank=True,null=True)
+    map_required = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return str(self.name)
+
+class OptionInput(models.Model):
+    name = models.CharField(max_length=254,blank=False,null=False,)
+    RADIO = 'radio'
+    TEXT = 'text'
+    EMAIL = 'email'
+    NUMBER = 'number'
+    CHECKBOX = 'checkbox'
+    HIDDEN = 'hidden'
     INPUT_TYPES = (
         (RADIO, 'radio'),
         (TEXT, 'text'),
         (EMAIL, 'email'),
         (NUMBER, 'number'),
         (CHECKBOX, 'checkbox'),
+        (HIDDEN, 'hidden'),
     )
-    input_type = models.CharField(max_length=2,choices=INPUT_TYPES,default=TEXT)
-    placeholder = models.CharField(max_length=254, default='')
+    input_type = models.CharField(max_length=25,choices=INPUT_TYPES,default=TEXT)
+    placeholder = models.CharField(max_length=254,blank=True,null=True, default='')
     date_created = models.DateTimeField(auto_now_add=True)
     required = models.BooleanField(default=False)
-    values = models.CharField(max_length=254, default='')
+    value_one = models.CharField(max_length=254, blank=True,null=True, default='')
+    value_two = models.CharField(max_length=254, blank=True,null=True, default='')
 
     def __unicode__(self):
         return str(self.name)
